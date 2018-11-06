@@ -13,6 +13,7 @@ import io.gobo.pollingapp.repositories.PollRepository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 
 @RestController
@@ -39,6 +40,7 @@ public class PollController
     public ResponseEntity<?> createPoll(@RequestBody Poll poll)
     {
         poll = pollRepository.save(poll);
+
         // Set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newPollUri = ServletUriComponentsBuilder
@@ -47,6 +49,7 @@ public class PollController
                 .buildAndExpand(poll.getId())
                 .toUri();
         responseHeaders.setLocation(newPollUri);
+
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
@@ -55,7 +58,7 @@ public class PollController
     @RequestMapping(value="/polls/{pollId}", method=RequestMethod.GET)
     public ResponseEntity<?> getPoll(@PathVariable Long pollId)
     {
-        Poll p = pollRepository.findOne(pollId);
+        Optional<Poll> p = pollRepository.findById(pollId);
         return new ResponseEntity<> (p, HttpStatus.OK);
     }
 
@@ -73,7 +76,7 @@ public class PollController
     @RequestMapping(value="/polls/{pollId}", method=RequestMethod.DELETE)
     public ResponseEntity<?> deletePoll(@PathVariable Long pollId)
     {
-        pollRepository.delete(pollId);
+        pollRepository.deleteById(pollId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

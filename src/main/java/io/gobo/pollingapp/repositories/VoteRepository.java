@@ -4,7 +4,7 @@ package io.gobo.pollingapp.repositories;
 
 import io.gobo.pollingapp.domain.Vote;
 import org.springframework.data.jpa.repository.Query;
-
+import org.springframework.data.repository.CrudRepository;
 
 
 public interface VoteRepository extends CrudRepository<Vote, Long>

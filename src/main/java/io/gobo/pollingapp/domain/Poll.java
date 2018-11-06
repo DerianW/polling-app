@@ -24,8 +24,10 @@ public class Poll
     @GeneratedValue
     @Column(name="POLL_ID")
     private Long id;
+
     @Column(name="QUESTION")
     private String question;
+
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="POLL_ID")
     @OrderBy
