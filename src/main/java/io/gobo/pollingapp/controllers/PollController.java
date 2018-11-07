@@ -5,6 +5,7 @@ package io.gobo.pollingapp.controllers;
 import javax.inject.Inject;
 
 import io.gobo.pollingapp.domain.Poll;
+import io.gobo.pollingapp.exceptionhandlers.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +60,10 @@ public class PollController
     public ResponseEntity<?> getPoll(@PathVariable Long pollId)
     {
         Optional<Poll> p = pollRepository.findById(pollId);
+        if(p == null)
+        {
+            throw new ResourceNotFoundException("Poll with id " + pollId + " not found");
+        }
         return new ResponseEntity<> (p, HttpStatus.OK);
     }
 
